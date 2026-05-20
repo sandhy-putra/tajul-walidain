@@ -415,7 +415,6 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
-    // resize canvas when switching to notes tab
     if (btn.dataset.tab === 'notes') setTimeout(resizeCanvas, 50);
   });
 });
@@ -482,7 +481,7 @@ const dCtx = dCanvas.getContext('2d');
 let drawing = false, eraser = false, lastX = 0, lastY = 0;
 
 function resizeCanvas() {
-  const w = dCanvas.parentElement.clientWidth;
+  const w = dCanvas.parentElement.clientWidth || window.innerWidth;
   const h = Math.round(window.innerHeight * 2.5);
   let img = null;
   if (dCanvas.width > 0 && dCanvas.height > 0) {
