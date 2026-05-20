@@ -19,8 +19,6 @@
   --accent2: #3a6fd4;
   --violet: #8b5cf6;
   --amber: #f59e0b;
-  --green: #10b981;
-  --red: #ef4444;
   --radius: 12px;
   --radius-sm: 8px;
 }
@@ -35,7 +33,7 @@ body {
 #app {
   max-width: 960px;
   margin: 0 auto;
-  padding: 16px 14px 40px;
+  padding: 14px 14px 40px;
 }
 
 /* HEADER */
@@ -43,31 +41,52 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
-  padding-bottom: 14px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
 .app-header .logo {
-  width: 36px;
-  height: 36px;
+  width: 34px; height: 34px;
   background: var(--accent);
   border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.app-header h1 { font-size: 15px; font-weight: 600; }
+.app-header p { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+/* TAB BAR */
+.tab-bar {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+  gap: 4px;
+  margin-bottom: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px;
 }
-.app-header h1 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-}
-.app-header p {
-  font-size: 11px;
+.tab-btn {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 8px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--text3);
-  margin-top: 1px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
+.tab-btn:hover { background: var(--surface2); color: var(--text2); }
+.tab-btn.active {
+  background: var(--surface2);
+  color: var(--text);
+  border-color: var(--border2);
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
 /* SECTION */
 .section {
@@ -78,49 +97,26 @@ body {
   margin-bottom: 14px;
 }
 .section-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  display: flex; align-items: center; gap: 8px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   background: var(--surface2);
 }
-.section-header .icon {
-  font-size: 14px;
-  opacity: 0.85;
-}
-.section-header .title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.02em;
-}
+.section-header .icon { font-size: 14px; }
+.section-header .title { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; }
 .section-header .badge {
   margin-left: auto;
-  font-size: 10px;
-  font-family: 'DM Mono', monospace;
+  font-size: 10px; font-family: 'DM Mono', monospace;
   color: var(--text3);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 2px 7px;
+  border-radius: 5px; padding: 2px 7px;
 }
 
-/* PDF */
-.pdf-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  gap: 6px;
-}
+/* BUTTONS */
 .btn {
   font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 12px; font-weight: 500;
   padding: 5px 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border2);
@@ -130,294 +126,151 @@ body {
   transition: background 0.15s, border-color 0.15s;
   white-space: nowrap;
 }
-.btn:hover { background: var(--border); border-color: var(--border2); }
+.btn:hover { background: var(--border); }
 .btn:disabled { opacity: 0.35; cursor: default; }
-.btn.primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn.primary:hover { background: var(--accent2); border-color: var(--accent2); }
 label.btn { display: inline-flex; align-items: center; }
 #pdfFileInput { display: none; }
 
-.pdf-nav {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+/* PDF */
+.pdf-toolbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
-.pdf-nav .page-jump {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 2px 6px;
+.pdf-nav { display: flex; align-items: center; gap: 5px; }
+.page-jump {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); padding: 3px 7px;
 }
-.pdf-nav .page-jump input {
-  width: 44px;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  text-align: center;
-  outline: none;
+.page-jump input {
+  width: 44px; font-family: 'DM Mono', monospace; font-size: 12px;
+  background: transparent; border: none; color: var(--text);
+  text-align: center; outline: none;
 }
-.pdf-nav .page-jump span {
-  font-size: 11px;
-  color: var(--text3);
-  font-family: 'DM Mono', monospace;
-}
-.pdf-nav .sep { color: var(--text3); font-size: 11px; }
-
+.page-jump span { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
 .zoom-group {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 2px 4px;
+  display: flex; align-items: center; gap: 3px; margin-left: auto;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); padding: 2px 4px;
 }
 .zoom-group button {
-  font-size: 14px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: var(--text2);
-  cursor: pointer;
-  border-radius: 5px;
-  line-height: 1;
+  font-size: 15px; width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; color: var(--text2);
+  cursor: pointer; border-radius: 5px;
 }
 .zoom-group button:hover { background: var(--border); color: var(--text); }
 .zoom-group button:disabled { opacity: 0.3; cursor: default; }
 .zoom-group .zlabel {
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  color: var(--text2);
-  min-width: 38px;
-  text-align: center;
+  font-size: 11px; font-family: 'DM Mono', monospace;
+  color: var(--text2); min-width: 38px; text-align: center;
 }
-
 .pdf-canvas-wrap {
-  overflow: auto;
-  height: 600px;
+  overflow: auto; height: 580px;
   background: #2a2a2e;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 16px;
+  display: flex; justify-content: center; align-items: flex-start; padding: 16px;
 }
 #pdfCanvas { display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.6); border-radius: 3px; }
 .pdf-empty {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--text3);
-  gap: 10px;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: var(--text3); gap: 10px;
 }
 .pdf-empty .eicon { font-size: 40px; opacity: 0.4; }
 .pdf-empty p { font-size: 13px; }
-.pdf-empty small { font-size: 11px; color: var(--text3); opacity: 0.6; }
+.pdf-empty small { font-size: 11px; opacity: 0.6; }
 
 /* ANSWER GRID */
 .answer-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 12px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border); background: var(--bg);
 }
 .ctrl-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 4px 8px;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); padding: 4px 8px;
 }
-.ctrl-group label {
-  font-size: 11px;
-  color: var(--text3);
-  font-weight: 500;
-}
+.ctrl-group label { font-size: 11px; color: var(--text3); font-weight: 500; }
 .ctrl-group input[type=number] {
-  width: 48px;
-  font-family: 'DM Mono', monospace;
-  font-size: 12px;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  text-align: center;
-  outline: none;
+  width: 48px; font-family: 'DM Mono', monospace; font-size: 12px;
+  background: transparent; border: none; color: var(--text);
+  text-align: center; outline: none;
 }
-
 .legend {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-  flex-wrap: wrap;
-  background: var(--bg);
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-bottom: 1px solid var(--border);
+  flex-wrap: wrap; background: var(--bg);
 }
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  color: var(--text3);
-}
-.dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.answer-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 6px;
-  padding: 12px;
-}
-@media (max-width: 680px) {
-  .answer-grid { grid-template-columns: repeat(5, 1fr); }
-}
-@media (max-width: 380px) {
-  .answer-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px; }
-}
-
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text3); }
+.dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.answer-grid { display: grid; gap: 6px; padding: 12px; }
 .answer-group {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 6px 5px 5px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 9px; padding: 6px 5px 5px;
   transition: border-color 0.15s;
 }
 .answer-group:hover { border-color: var(--border2); }
 .qnum {
-  font-size: 10px;
-  color: var(--text3);
+  font-size: 10px; color: var(--text3);
   font-family: 'DM Mono', monospace;
-  margin-bottom: 5px;
-  font-weight: 500;
-  text-align: center;
+  margin-bottom: 5px; font-weight: 500; text-align: center;
 }
-.opts {
-  display: flex;
-  gap: 3px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+.opts { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
 .opt-btn {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 700;
-  cursor: pointer;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 10px; font-weight: 700; cursor: pointer;
   transition: transform 0.1s, box-shadow 0.15s;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  flex-shrink: 0;
+  border: none; font-family: 'DM Sans', sans-serif; flex-shrink: 0;
 }
 .opt-btn:active { transform: scale(0.82); }
 .opt-btn:hover { box-shadow: 0 0 0 2px rgba(79,142,247,0.3); }
-
 .info-bar {
-  display: flex;
-  gap: 0;
-  padding: 10px 12px;
-  border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-  background: var(--bg);
+  display: flex; padding: 10px 12px;
+  border-top: 1px solid var(--border); background: var(--bg);
 }
 .stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  padding: 4px 8px;
-  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center;
+  flex: 1; padding: 4px 8px; border-right: 1px solid var(--border);
 }
 .stat:last-child { border-right: none; }
-.stat .val {
-  font-size: 18px;
-  font-weight: 600;
-  font-family: 'DM Mono', monospace;
-  line-height: 1.2;
-}
-.stat .lbl {
-  font-size: 10px;
-  color: var(--text3);
-  margin-top: 1px;
-}
+.stat .val { font-size: 18px; font-weight: 600; font-family: 'DM Mono', monospace; line-height: 1.2; }
+.stat .lbl { font-size: 10px; color: var(--text3); margin-top: 1px; }
 .stat.s-yakin .val { color: var(--accent); }
 .stat.s-ragu .val { color: var(--violet); }
 .stat.s-belum .val { color: var(--text3); }
 
 /* DRAWING CANVAS */
 .canvas-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border); background: var(--bg);
 }
 .tool-group {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: var(--radius-sm);
-  padding: 4px 8px;
+  display: flex; align-items: center; gap: 5px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); padding: 4px 8px;
 }
 .tool-group label { font-size: 11px; color: var(--text3); }
 .tool-group input[type=color] {
-  width: 26px;
-  height: 26px;
-  border: 1px solid var(--border2);
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 1px;
-  background: transparent;
+  width: 26px; height: 26px;
+  border: 1px solid var(--border2); border-radius: 5px;
+  cursor: pointer; padding: 1px; background: transparent;
 }
-.tool-group input[type=range] {
-  width: 72px;
-  accent-color: var(--accent);
-}
-.size-val {
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  color: var(--text2);
-  min-width: 18px;
-}
+.tool-group input[type=range] { width: 72px; accent-color: var(--accent); }
+.size-val { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text2); min-width: 18px; }
 .eraser-active { background: var(--amber) !important; border-color: var(--amber) !important; color: #000 !important; }
-
+.canvas-scroll-wrap {
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+}
 #drawCanvas {
   display: block;
-  width: 100%;
-  height: 320px;
-  cursor: crosshair;
-  touch-action: none;
-  background: #fff;
+  cursor: crosshair; touch-action: none; background: #fff;
 }
 
 /* SCROLLBAR */
@@ -429,12 +282,9 @@ label.btn { display: inline-flex; align-items: center; }
 /* MOBILE */
 @media (max-width: 480px) {
   #app { padding: 10px 10px 30px; }
-  .app-header h1 { font-size: 14px; }
-  .pdf-canvas-wrap { height: 420px; }
-  .pdf-toolbar { gap: 4px; }
-  .zoom-group .zlabel { min-width: 30px; }
-  #drawCanvas { height: 260px; }
-  .answer-grid { grid-template-columns: repeat(4, 1fr); }
+  .pdf-canvas-wrap { height: 400px; }
+  #drawCanvas { height: 300px; }
+  .tab-btn { font-size: 12px; padding: 8px 4px; gap: 4px; }
 }
 </style>
 </head>
@@ -449,102 +299,127 @@ label.btn { display: inline-flex; align-items: center; }
     </div>
   </div>
 
-  <!-- PDF VIEWER -->
-  <div class="section">
-    <div class="section-header">
-      <span class="icon">📄</span>
-      <span class="title">Preview Soal (PDF)</span>
-      <span class="badge" id="pdfBadge">Tidak ada file</span>
-    </div>
-    <div class="pdf-toolbar">
-      <label class="btn primary" for="pdfFileInput">⬆ Upload PDF</label>
-      <input type="file" id="pdfFileInput" accept="application/pdf">
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="main">📄 Soal &amp; Jawaban</button>
+    <button class="tab-btn" data-tab="notes">✏️ Coretan</button>
+  </div>
 
-      <div class="pdf-nav">
-        <button class="btn" id="prevPage" disabled>‹</button>
-        <div class="page-jump">
-          <input type="number" id="pageInput" value="1" min="1" title="Masukkan nomor halaman">
-          <span id="totalPages">/ –</span>
+  <!-- TAB: SOAL & JAWABAN -->
+  <div class="tab-panel active" id="tab-main">
+
+    <!-- PDF VIEWER -->
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">📄</span>
+        <span class="title">Preview Soal (PDF)</span>
+        <span class="badge" id="pdfBadge">Tidak ada file</span>
+      </div>
+      <div class="pdf-toolbar">
+        <label class="btn primary" for="pdfFileInput">⬆ Upload PDF</label>
+        <input type="file" id="pdfFileInput" accept="application/pdf">
+        <div class="pdf-nav">
+          <button class="btn" id="prevPage" disabled>‹</button>
+          <div class="page-jump">
+            <input type="number" id="pageInput" value="1" min="1" title="Nomor halaman">
+            <span id="totalPages">/ –</span>
+          </div>
+          <button class="btn" id="nextPage" disabled>›</button>
+          <button class="btn" id="goPageBtn" disabled style="padding:5px 8px;font-size:11px;">Go</button>
         </div>
-        <button class="btn" id="nextPage" disabled>›</button>
-        <button class="btn" id="goPageBtn" disabled style="padding:5px 8px;font-size:11px;">Go</button>
+        <div class="zoom-group">
+          <button id="zoomOut" disabled>−</button>
+          <span class="zlabel" id="zoomLevel">120%</span>
+          <button id="zoomIn" disabled>+</button>
+        </div>
       </div>
+      <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
+        <div class="pdf-empty">
+          <div class="eicon">📄</div>
+          <p>Upload file PDF soal kamu di atas</p>
+          <small>Mendukung semua ukuran PDF</small>
+        </div>
+      </div>
+    </div>
 
-      <div class="zoom-group">
-        <button id="zoomOut" disabled title="Zoom out">−</button>
-        <span class="zlabel" id="zoomLevel">120%</span>
-        <button id="zoomIn" disabled title="Zoom in">+</button>
+    <!-- ANSWER GRID -->
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">📝</span>
+        <span class="title">Lembar Jawaban</span>
+        <span class="badge" id="answerBadge">50 soal · 4 opsi</span>
+      </div>
+      <div class="answer-controls">
+        <div class="ctrl-group">
+          <label>Jumlah Soal</label>
+          <input type="number" id="numQ" value="50" min="1" max="200">
+        </div>
+        <div class="ctrl-group">
+          <label>Opsi</label>
+          <input type="number" id="numOpts" value="4" min="2" max="6">
+        </div>
+        <button class="btn primary" id="generateBtn">Generate</button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="dot" style="background:#2a2f42;border:1px solid #3a3f55"></div>Belum</div>
+        <div class="legend-item"><div class="dot" style="background:#4f8ef7"></div>Yakin</div>
+        <div class="legend-item"><div class="dot" style="background:#8b5cf6"></div>Ragu ×2</div>
+        <div class="legend-item"><div class="dot" style="background:#f59e0b"></div>Ragu ×3</div>
+        <div class="legend-item" style="font-size:10px;color:var(--text3)">(×4 = batal)</div>
+      </div>
+      <div class="answer-grid" id="answerGrid"></div>
+      <div class="info-bar">
+        <div class="stat s-yakin"><span class="val" id="answeredCount">0</span><span class="lbl">Yakin</span></div>
+        <div class="stat s-ragu"><span class="val" id="doubtCount">0</span><span class="lbl">Ragu-ragu</span></div>
+        <div class="stat s-belum"><span class="val" id="unansweredCount">50</span><span class="lbl">Belum</span></div>
       </div>
     </div>
-    <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
-      <div class="pdf-empty">
-        <div class="eicon">📄</div>
-        <p>Upload file PDF soal kamu di atas</p>
-        <small>Mendukung semua ukuran PDF</small>
-      </div>
-    </div>
-  </div>
 
-  <!-- ANSWER GRID -->
-  <div class="section">
-    <div class="section-header">
-      <span class="icon">📝</span>
-      <span class="title">Lembar Jawaban</span>
-      <span class="badge" id="answerBadge">50 soal · 4 opsi</span>
-    </div>
-    <div class="answer-controls">
-      <div class="ctrl-group">
-        <label>Jumlah Soal</label>
-        <input type="number" id="numQ" value="50" min="1" max="200">
-      </div>
-      <div class="ctrl-group">
-        <label>Opsi</label>
-        <input type="number" id="numOpts" value="4" min="2" max="6">
-      </div>
-      <button class="btn primary" id="generateBtn">Generate</button>
-      <button class="btn" id="resetBtn">Reset</button>
-    </div>
-    <div class="legend">
-      <div class="legend-item"><div class="dot" style="background:#2a2f42;border:1px solid #3a3f55"></div>Belum</div>
-      <div class="legend-item"><div class="dot" style="background:#4f8ef7"></div>Yakin</div>
-      <div class="legend-item"><div class="dot" style="background:#8b5cf6"></div>Ragu ×2</div>
-      <div class="legend-item"><div class="dot" style="background:#f59e0b"></div>Ragu ×3</div>
-      <div class="legend-item" style="font-size:10px;color:var(--text3)">(×4 = batal)</div>
-    </div>
-    <div class="answer-grid" id="answerGrid"></div>
-    <div class="info-bar">
-      <div class="stat s-yakin"><span class="val" id="answeredCount">0</span><span class="lbl">Yakin</span></div>
-      <div class="stat s-ragu"><span class="val" id="doubtCount">0</span><span class="lbl">Ragu-ragu</span></div>
-      <div class="stat s-belum"><span class="val" id="unansweredCount">50</span><span class="lbl">Belum</span></div>
-    </div>
-  </div>
+  </div><!-- /tab-main -->
 
-  <!-- DRAWING CANVAS -->
-  <div class="section">
-    <div class="section-header">
-      <span class="icon">✏️</span>
-      <span class="title">Coretan & Catatan</span>
-    </div>
-    <div class="canvas-toolbar">
-      <div class="tool-group">
-        <label>Warna</label>
-        <input type="color" id="penColor" value="#4f8ef7">
+  <!-- TAB: CORETAN -->
+  <div class="tab-panel" id="tab-notes">
+    <div class="section">
+      <div class="section-header">
+        <span class="icon">✏️</span>
+        <span class="title">Coretan &amp; Catatan</span>
       </div>
-      <div class="tool-group">
-        <label>Tebal</label>
-        <input type="range" id="penSize" min="1" max="20" value="2">
-        <span class="size-val" id="sizeVal">2</span>
+      <div class="canvas-toolbar">
+        <div class="tool-group">
+          <label>Warna</label>
+          <input type="color" id="penColor" value="#4f8ef7">
+        </div>
+        <div class="tool-group">
+          <label>Tebal</label>
+          <input type="range" id="penSize" min="1" max="20" value="2">
+          <span class="size-val" id="sizeVal">2</span>
+        </div>
+        <button class="btn" id="eraserBtn">🧹 Penghapus</button>
+        <button class="btn" id="clearCanvasBtn">🗑 Hapus Semua</button>
       </div>
-      <button class="btn" id="eraserBtn">🧹 Penghapus</button>
-      <button class="btn" id="clearCanvasBtn">🗑 Hapus Semua</button>
+      <div class="canvas-scroll-wrap">
+        <canvas id="drawCanvas"></canvas>
+      </div>
     </div>
-    <canvas id="drawCanvas"></canvas>
-  </div>
+  </div><!-- /tab-notes -->
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    // resize canvas when switching to notes tab
+    if (btn.dataset.tab === 'notes') setTimeout(resizeCanvas, 50);
+  });
+});
+
 // ── PDF.js ──
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 let pdfDoc = null, pdfPage = 1, pdfZoom = 1.2;
@@ -587,8 +462,7 @@ async function renderPage() {
     canvas.id = 'pdfCanvas';
     pdfCanvasWrap.appendChild(canvas);
   }
-  canvas.width = vp.width;
-  canvas.height = vp.height;
+  canvas.width = vp.width; canvas.height = vp.height;
   await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
   prevBtn.disabled = pdfPage <= 1;
   nextBtn.disabled = pdfPage >= pdfDoc.numPages;
@@ -597,13 +471,8 @@ async function renderPage() {
 
 prevBtn.addEventListener('click', () => { pdfPage--; renderPage(); });
 nextBtn.addEventListener('click', () => { pdfPage++; renderPage(); });
-goBtn.addEventListener('click', () => {
-  const val = parseInt(pageInput.value);
-  if (!isNaN(val)) { pdfPage = val; renderPage(); }
-});
-pageInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { pdfPage = parseInt(pageInput.value) || 1; renderPage(); }
-});
+goBtn.addEventListener('click', () => { pdfPage = parseInt(pageInput.value) || 1; renderPage(); });
+pageInput.addEventListener('keydown', e => { if (e.key === 'Enter') { pdfPage = parseInt(pageInput.value) || 1; renderPage(); } });
 zoomInBtn.addEventListener('click', () => { pdfZoom = Math.min(3, pdfZoom + 0.2); renderPage(); });
 zoomOutBtn.addEventListener('click', () => { pdfZoom = Math.max(0.4, pdfZoom - 0.2); renderPage(); });
 
@@ -614,58 +483,49 @@ let drawing = false, eraser = false, lastX = 0, lastY = 0;
 
 function resizeCanvas() {
   const w = dCanvas.parentElement.clientWidth;
-  const h = dCanvas.height || 320;
-  const img = dCtx.getImageData(0, 0, dCanvas.width, dCanvas.height);
+  const h = Math.round(window.innerHeight * 2.5);
+  let img = null;
+  if (dCanvas.width > 0 && dCanvas.height > 0) {
+    img = dCtx.getImageData(0, 0, dCanvas.width, dCanvas.height);
+  }
   dCanvas.width = w;
   dCanvas.height = h;
-  dCtx.putImageData(img, 0, 0);
+  if (img) dCtx.putImageData(img, 0, 0);
 }
-// Set initial height properly
-dCanvas.height = 320;
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 function getPos(e) {
   const r = dCanvas.getBoundingClientRect();
   const s = e.touches ? e.touches[0] : e;
-  return [s.clientX - r.left, s.clientY - r.top];
+  // use scaleX/Y in case CSS scales the canvas
+  const scaleX = dCanvas.width / r.width;
+  const scaleY = dCanvas.height / r.height;
+  return [(s.clientX - r.left) * scaleX, (s.clientY - r.top) * scaleY];
 }
-dCanvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getPos(e); });
-dCanvas.addEventListener('mousemove', e => {
-  if (!drawing) return;
-  const [x, y] = getPos(e);
+function drawLine(x, y) {
   dCtx.beginPath(); dCtx.moveTo(lastX, lastY); dCtx.lineTo(x, y);
   dCtx.strokeStyle = eraser ? '#ffffff' : document.getElementById('penColor').value;
   dCtx.lineWidth = parseInt(document.getElementById('penSize').value) * (eraser ? 6 : 1);
   dCtx.lineCap = 'round'; dCtx.lineJoin = 'round'; dCtx.stroke();
   [lastX, lastY] = [x, y];
-});
+}
+dCanvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getPos(e); });
+dCanvas.addEventListener('mousemove', e => { if (!drawing) return; drawLine(...getPos(e)); });
 dCanvas.addEventListener('mouseup', () => drawing = false);
 dCanvas.addEventListener('mouseleave', () => drawing = false);
 dCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; [lastX, lastY] = getPos(e); }, { passive: false });
-dCanvas.addEventListener('touchmove', e => {
-  if (!drawing) return; e.preventDefault();
-  const [x, y] = getPos(e);
-  dCtx.beginPath(); dCtx.moveTo(lastX, lastY); dCtx.lineTo(x, y);
-  dCtx.strokeStyle = eraser ? '#ffffff' : document.getElementById('penColor').value;
-  dCtx.lineWidth = parseInt(document.getElementById('penSize').value) * (eraser ? 6 : 1);
-  dCtx.lineCap = 'round'; dCtx.lineJoin = 'round'; dCtx.stroke();
-  [lastX, lastY] = [x, y];
-}, { passive: false });
+dCanvas.addEventListener('touchmove', e => { if (!drawing) return; e.preventDefault(); drawLine(...getPos(e)); }, { passive: false });
 dCanvas.addEventListener('touchend', () => drawing = false);
 
-document.getElementById('penSize').addEventListener('input', e => {
-  document.getElementById('sizeVal').textContent = e.target.value;
-});
+document.getElementById('penSize').addEventListener('input', e => { document.getElementById('sizeVal').textContent = e.target.value; });
 document.getElementById('eraserBtn').addEventListener('click', function () {
   eraser = !eraser;
   this.textContent = eraser ? '🖊 Pena' : '🧹 Penghapus';
   this.classList.toggle('eraser-active', eraser);
   dCanvas.style.cursor = eraser ? 'cell' : 'crosshair';
 });
-document.getElementById('clearCanvasBtn').addEventListener('click', () => {
-  dCtx.clearRect(0, 0, dCanvas.width, dCanvas.height);
-});
+document.getElementById('clearCanvasBtn').addEventListener('click', () => dCtx.clearRect(0, 0, dCanvas.width, dCanvas.height));
 
 // ── Answer Grid ──
 const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -679,51 +539,51 @@ let answers = {}, numQ = 50, numOpts = 4;
 
 function applyBtnStyle(btn, state) {
   const s = STATES[state] || STATES[0];
-  btn.style.background = s.bg;
-  btn.style.color = s.color;
-  btn.style.border = s.border;
+  btn.style.background = s.bg; btn.style.color = s.color; btn.style.border = s.border;
+}
+
+function calcCols(opts) {
+  const w = window.innerWidth;
+  const cardMinW = opts * 26 + 18;
+  const availW = Math.min(w - 28, 960);
+  const maxCols = Math.floor(availW / (cardMinW + 6));
+  if (w >= 960) return Math.min(10, Math.max(3, maxCols));
+  return Math.max(2, Math.min(5, maxCols));
 }
 
 function buildGrid() {
   const grid = document.getElementById('answerGrid');
   grid.innerHTML = '';
+  grid.style.gridTemplateColumns = `repeat(${calcCols(numOpts)}, 1fr)`;
   document.getElementById('answerBadge').textContent = numQ + ' soal · ' + numOpts + ' opsi';
   for (let q = 1; q <= numQ; q++) {
     const g = document.createElement('div');
     g.className = 'answer-group';
     const qn = document.createElement('div');
-    qn.className = 'qnum';
-    qn.textContent = q;
-    g.appendChild(qn);
-    const opts = document.createElement('div');
-    opts.className = 'opts';
+    qn.className = 'qnum'; qn.textContent = q; g.appendChild(qn);
+    const opts = document.createElement('div'); opts.className = 'opts';
     for (let i = 0; i < numOpts; i++) {
       const lbl = ALPHA[i];
       const btn = document.createElement('button');
-      btn.className = 'opt-btn';
-      btn.textContent = lbl;
+      btn.className = 'opt-btn'; btn.textContent = lbl;
       applyBtnStyle(btn, (answers[q] && answers[q][lbl]) || 0);
       btn.addEventListener('click', () => {
         if (!answers[q]) answers[q] = {};
         const c = answers[q][lbl] || 0, next = (c + 1) % 4;
         if (next === 0) delete answers[q][lbl]; else answers[q][lbl] = next;
         if (Object.keys(answers[q]).length === 0) delete answers[q];
-        applyBtnStyle(btn, next);
-        recalcInfo();
+        applyBtnStyle(btn, next); recalcInfo();
       });
       opts.appendChild(btn);
     }
-    g.appendChild(opts);
-    grid.appendChild(g);
+    g.appendChild(opts); grid.appendChild(g);
   }
   recalcInfo();
 }
 
 function recalcInfo() {
   let yakin = 0, ragu = 0, total = Object.keys(answers).length;
-  for (const q in answers) {
-    if (Object.values(answers[q]).some(s => s >= 2)) ragu++; else yakin++;
-  }
+  for (const q in answers) { if (Object.values(answers[q]).some(s => s >= 2)) ragu++; else yakin++; }
   document.getElementById('answeredCount').textContent = yakin;
   document.getElementById('doubtCount').textContent = ragu;
   document.getElementById('unansweredCount').textContent = numQ - total;
@@ -735,6 +595,9 @@ document.getElementById('generateBtn').addEventListener('click', () => {
   answers = {}; buildGrid();
 });
 document.getElementById('resetBtn').addEventListener('click', () => { answers = {}; buildGrid(); });
+window.addEventListener('resize', () => {
+  document.getElementById('answerGrid').style.gridTemplateColumns = `repeat(${calcCols(numOpts)}, 1fr)`;
+});
 buildGrid();
 </script>
 </body>
