@@ -1,249 +1,741 @@
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lembar Jawaban</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-#app{padding:0.75rem 0;font-family:var(--font-sans);font-size:13px}
-h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
-.section-label{font-size:11px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px}
+:root {
+  --bg: #0f1117;
+  --surface: #181c27;
+  --surface2: #1e2333;
+  --border: #2a2f42;
+  --border2: #323750;
+  --text: #e8eaf0;
+  --text2: #8b90a7;
+  --text3: #555c78;
+  --accent: #4f8ef7;
+  --accent2: #3a6fd4;
+  --violet: #8b5cf6;
+  --amber: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  min-height: 100vh;
+}
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 16px 14px 40px;
+}
 
-/* PDF VIEWER */
-.pdf-wrap{border:0.5px solid var(--color-border-secondary);border-radius:10px;overflow:hidden;margin-bottom:12px;background:var(--color-background-secondary)}
-.pdf-toolbar{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap}
-.pdf-toolbar button{font-size:11px;padding:3px 9px;border-radius:5px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
-.pdf-toolbar button:hover{background:var(--color-background-secondary)}
-.pdf-toolbar button:disabled{opacity:0.4;cursor:default}
-.pdf-toolbar span{font-size:11px;color:var(--color-text-secondary)}
-.pdf-toolbar label.upload-btn{font-size:11px;padding:3px 11px;border-radius:5px;border:0.5px solid var(--color-border-secondary);background:#185FA5;color:#fff;cursor:pointer;white-space:nowrap}
-.pdf-toolbar label.upload-btn:hover{background:#1a4f8a}
-#pdfFileInput{display:none}
-.pdf-zoom{display:flex;align-items:center;gap:4px;margin-left:auto}
-.pdf-zoom button{padding:2px 7px}
-.pdf-zoom span{font-size:11px;min-width:36px;text-align:center;color:var(--color-text-secondary)}
+/* HEADER */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.app-header .logo {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.app-header h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.app-header p {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 1px;
+}
 
-.pdf-canvas-wrap{overflow:auto;max-height:480px;background:#525659;display:flex;justify-content:center;align-items:flex-start;padding:12px}
-#pdfCanvas{display:block;box-shadow:0 2px 12px rgba(0,0,0,0.4);border-radius:2px}
-.pdf-empty{text-align:center;padding:40px 20px;color:var(--color-text-tertiary);font-size:13px}
-.pdf-empty .icon{font-size:36px;margin-bottom:8px;opacity:0.4}
+/* SECTION */
+.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.section-header .icon {
+  font-size: 14px;
+  opacity: 0.85;
+}
+.section-header .title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+.section-header .badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-family: 'DM Mono', monospace;
+  color: var(--text3);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 7px;
+}
 
-/* CANVAS */
-.canvas-wrap{border:0.5px solid var(--color-border-secondary);border-radius:10px;background:#fff;margin-bottom:12px;overflow:hidden}
-.canvas-toolbar{display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:0.5px solid var(--color-border-tertiary);flex-wrap:wrap;background:var(--color-background-secondary)}
-.canvas-toolbar label{font-size:11px;color:var(--color-text-secondary)}
-.canvas-toolbar input[type=color]{width:24px;height:24px;border:0.5px solid var(--color-border-secondary);border-radius:4px;cursor:pointer;padding:1px}
-.canvas-toolbar input[type=range]{width:70px}
-.canvas-toolbar button{font-size:11px;padding:3px 9px;border-radius:5px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
-.canvas-toolbar button:hover{background:var(--color-background-secondary)}
-#drawCanvas{display:block;width:100%;cursor:crosshair;touch-action:none;background:#fff}
+/* PDF */
+.pdf-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  gap: 6px;
+}
+.btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border2);
+  background: var(--surface2);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--border); border-color: var(--border2); }
+.btn:disabled { opacity: 0.35; cursor: default; }
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover { background: var(--accent2); border-color: var(--accent2); }
+label.btn { display: inline-flex; align-items: center; }
+#pdfFileInput { display: none; }
 
-/* ANSWER */
-.controls{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.controls label{font-size:12px;color:var(--color-text-secondary)}
-.controls input[type=number]{width:52px;font-size:12px;padding:3px 6px;border:0.5px solid var(--color-border-secondary);border-radius:6px;background:var(--color-background-primary);color:var(--color-text-primary)}
-.controls button{font-size:12px;padding:4px 11px;border-radius:6px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer}
-.controls button:hover{background:var(--color-background-secondary)}
-.legend{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
-.legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--color-text-secondary)}
-.dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
-.answer-section{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
-@media(max-width:600px){.answer-section{grid-template-columns:repeat(5,1fr)}}
-.answer-group{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:7px;padding:5px 5px 4px}
-.qnum{font-size:10px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500}
-.opts{display:flex;gap:3px;flex-wrap:wrap}
-.opt-btn{width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:600;cursor:pointer;transition:transform 0.1s;flex-shrink:0}
-.opt-btn:active{transform:scale(0.85)}
-.info-bar{display:flex;gap:14px;margin-top:10px;font-size:12px;color:var(--color-text-secondary);flex-wrap:wrap;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary)}
-.info-bar span b{color:var(--color-text-primary);font-weight:500}
+.pdf-nav {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pdf-nav .page-jump {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+}
+.pdf-nav .page-jump input {
+  width: 44px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+}
+.pdf-nav .page-jump span {
+  font-size: 11px;
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+}
+.pdf-nav .sep { color: var(--text3); font-size: 11px; }
+
+.zoom-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+}
+.zoom-group button {
+  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  border-radius: 5px;
+  line-height: 1;
+}
+.zoom-group button:hover { background: var(--border); color: var(--text); }
+.zoom-group button:disabled { opacity: 0.3; cursor: default; }
+.zoom-group .zlabel {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--text2);
+  min-width: 38px;
+  text-align: center;
+}
+
+.pdf-canvas-wrap {
+  overflow: auto;
+  height: 600px;
+  background: #2a2a2e;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+}
+#pdfCanvas { display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.6); border-radius: 3px; }
+.pdf-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text3);
+  gap: 10px;
+}
+.pdf-empty .eicon { font-size: 40px; opacity: 0.4; }
+.pdf-empty p { font-size: 13px; }
+.pdf-empty small { font-size: 11px; color: var(--text3); opacity: 0.6; }
+
+/* ANSWER GRID */
+.answer-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+}
+.ctrl-group label {
+  font-size: 11px;
+  color: var(--text3);
+  font-weight: 500;
+}
+.ctrl-group input[type=number] {
+  width: 48px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  background: var(--bg);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--text3);
+}
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+  padding: 12px;
+}
+@media (max-width: 680px) {
+  .answer-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (max-width: 380px) {
+  .answer-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 8px; }
+}
+
+.answer-group {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 6px 5px 5px;
+  transition: border-color 0.15s;
+}
+.answer-group:hover { border-color: var(--border2); }
+.qnum {
+  font-size: 10px;
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  margin-bottom: 5px;
+  font-weight: 500;
+  text-align: center;
+}
+.opts {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.opt-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.15s;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  flex-shrink: 0;
+}
+.opt-btn:active { transform: scale(0.82); }
+.opt-btn:hover { box-shadow: 0 0 0 2px rgba(79,142,247,0.3); }
+
+.info-bar {
+  display: flex;
+  gap: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  background: var(--bg);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 4px 8px;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child { border-right: none; }
+.stat .val {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'DM Mono', monospace;
+  line-height: 1.2;
+}
+.stat .lbl {
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 1px;
+}
+.stat.s-yakin .val { color: var(--accent); }
+.stat.s-ragu .val { color: var(--violet); }
+.stat.s-belum .val { color: var(--text3); }
+
+/* DRAWING CANVAS */
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+}
+.tool-group label { font-size: 11px; color: var(--text3); }
+.tool-group input[type=color] {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 1px;
+  background: transparent;
+}
+.tool-group input[type=range] {
+  width: 72px;
+  accent-color: var(--accent);
+}
+.size-val {
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  color: var(--text2);
+  min-width: 18px;
+}
+.eraser-active { background: var(--amber) !important; border-color: var(--amber) !important; color: #000 !important; }
+
+#drawCanvas {
+  display: block;
+  width: 100%;
+  height: 320px;
+  cursor: crosshair;
+  touch-action: none;
+  background: #fff;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* MOBILE */
+@media (max-width: 480px) {
+  #app { padding: 10px 10px 30px; }
+  .app-header h1 { font-size: 14px; }
+  .pdf-canvas-wrap { height: 420px; }
+  .pdf-toolbar { gap: 4px; }
+  .zoom-group .zlabel { min-width: 30px; }
+  #drawCanvas { height: 260px; }
+  .answer-grid { grid-template-columns: repeat(4, 1fr); }
+}
 </style>
-
+</head>
+<body>
 <div id="app">
-  <h2 class="sr-only">Lembar jawaban dengan PDF viewer dan kanvas</h2>
+
+  <div class="app-header">
+    <div class="logo">📝</div>
+    <div>
+      <h1>Lembar Jawaban</h1>
+      <p>PDF viewer · Lembar jawaban · Coretan</p>
+    </div>
+  </div>
 
   <!-- PDF VIEWER -->
-  <div class="section-label">📄 Preview Soal (PDF)</div>
-  <div class="pdf-wrap">
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📄</span>
+      <span class="title">Preview Soal (PDF)</span>
+      <span class="badge" id="pdfBadge">Tidak ada file</span>
+    </div>
     <div class="pdf-toolbar">
-      <label class="upload-btn" for="pdfFileInput">⬆ Upload PDF</label>
+      <label class="btn primary" for="pdfFileInput">⬆ Upload PDF</label>
       <input type="file" id="pdfFileInput" accept="application/pdf">
-      <button id="prevPage" disabled>◀ Prev</button>
-      <span id="pageInfo">–</span>
-      <button id="nextPage" disabled>Next ▶</button>
-      <div class="pdf-zoom">
-        <button id="zoomOut" disabled>−</button>
-        <span id="zoomLevel">100%</span>
-        <button id="zoomIn" disabled>+</button>
+
+      <div class="pdf-nav">
+        <button class="btn" id="prevPage" disabled>‹</button>
+        <div class="page-jump">
+          <input type="number" id="pageInput" value="1" min="1" title="Masukkan nomor halaman">
+          <span id="totalPages">/ –</span>
+        </div>
+        <button class="btn" id="nextPage" disabled>›</button>
+        <button class="btn" id="goPageBtn" disabled style="padding:5px 8px;font-size:11px;">Go</button>
+      </div>
+
+      <div class="zoom-group">
+        <button id="zoomOut" disabled title="Zoom out">−</button>
+        <span class="zlabel" id="zoomLevel">120%</span>
+        <button id="zoomIn" disabled title="Zoom in">+</button>
       </div>
     </div>
     <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
       <div class="pdf-empty">
-        <div class="icon">📄</div>
-        Upload file PDF soal kamu di atas
+        <div class="eicon">📄</div>
+        <p>Upload file PDF soal kamu di atas</p>
+        <small>Mendukung semua ukuran PDF</small>
       </div>
     </div>
   </div>
 
-  <!-- CORET-CORETAN -->
-  <div class="section-label">✏️ Coret-coretan</div>
-  <div class="canvas-wrap">
-    <div class="canvas-toolbar">
-      <label>Warna</label>
-      <input type="color" id="penColor" value="#1d4ed8">
-      <label>Tebal</label>
-      <input type="range" id="penSize" min="1" max="20" value="2">
-      <span id="sizeVal" style="font-size:11px;width:16px;color:var(--color-text-secondary)">2</span>
-      <button id="eraserBtn">Penghapus</button>
-      <button id="clearCanvasBtn">Hapus Semua</button>
+  <!-- ANSWER GRID -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">📝</span>
+      <span class="title">Lembar Jawaban</span>
+      <span class="badge" id="answerBadge">50 soal · 4 opsi</span>
     </div>
-    <canvas id="drawCanvas" height="150"></canvas>
+    <div class="answer-controls">
+      <div class="ctrl-group">
+        <label>Jumlah Soal</label>
+        <input type="number" id="numQ" value="50" min="1" max="200">
+      </div>
+      <div class="ctrl-group">
+        <label>Opsi</label>
+        <input type="number" id="numOpts" value="4" min="2" max="6">
+      </div>
+      <button class="btn primary" id="generateBtn">Generate</button>
+      <button class="btn" id="resetBtn">Reset</button>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:#2a2f42;border:1px solid #3a3f55"></div>Belum</div>
+      <div class="legend-item"><div class="dot" style="background:#4f8ef7"></div>Yakin</div>
+      <div class="legend-item"><div class="dot" style="background:#8b5cf6"></div>Ragu ×2</div>
+      <div class="legend-item"><div class="dot" style="background:#f59e0b"></div>Ragu ×3</div>
+      <div class="legend-item" style="font-size:10px;color:var(--text3)">(×4 = batal)</div>
+    </div>
+    <div class="answer-grid" id="answerGrid"></div>
+    <div class="info-bar">
+      <div class="stat s-yakin"><span class="val" id="answeredCount">0</span><span class="lbl">Yakin</span></div>
+      <div class="stat s-ragu"><span class="val" id="doubtCount">0</span><span class="lbl">Ragu-ragu</span></div>
+      <div class="stat s-belum"><span class="val" id="unansweredCount">50</span><span class="lbl">Belum</span></div>
+    </div>
   </div>
 
-  <!-- LEMBAR JAWABAN -->
-  <div class="section-label">📝 Lembar Jawaban</div>
-  <div class="controls">
-    <label>Soal:</label>
-    <input type="number" id="numQ" value="50" min="1" max="200">
-    <label>Opsi:</label>
-    <input type="number" id="numOpts" value="4" min="2" max="6">
-    <button id="generateBtn">Generate</button>
-    <button id="resetBtn">Reset</button>
+  <!-- DRAWING CANVAS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="icon">✏️</span>
+      <span class="title">Coretan & Catatan</span>
+    </div>
+    <div class="canvas-toolbar">
+      <div class="tool-group">
+        <label>Warna</label>
+        <input type="color" id="penColor" value="#4f8ef7">
+      </div>
+      <div class="tool-group">
+        <label>Tebal</label>
+        <input type="range" id="penSize" min="1" max="20" value="2">
+        <span class="size-val" id="sizeVal">2</span>
+      </div>
+      <button class="btn" id="eraserBtn">🧹 Penghapus</button>
+      <button class="btn" id="clearCanvasBtn">🗑 Hapus Semua</button>
+    </div>
+    <canvas id="drawCanvas"></canvas>
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="dot" style="background:#e5e7eb;border:1px solid #ccc"></div>Belum</div>
-    <div class="legend-item"><div class="dot" style="background:#185FA5"></div>Yakin (1x)</div>
-    <div class="legend-item"><div class="dot" style="background:#7c3aed"></div>Ragu ke-2 (2x)</div>
-    <div class="legend-item"><div class="dot" style="background:#b45309"></div>Ragu ke-3 (3x)</div>
-    <div class="legend-item" style="font-size:10px">(4x = batal)</div>
-  </div>
-  <div class="answer-section" id="answerGrid"></div>
-  <div class="info-bar">
-    <span>Yakin: <b id="answeredCount">0</b></span>
-    <span>Ragu-ragu: <b id="doubtCount">0</b></span>
-    <span>Belum: <b id="unansweredCount">50</b></span>
-  </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-// ── PDF.js setup ──
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-let pdfDoc=null,pdfPage=1,pdfZoom=1.2;
+// ── PDF.js ──
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+let pdfDoc = null, pdfPage = 1, pdfZoom = 1.2;
 
-const pdfCanvasWrap=document.getElementById('pdfCanvasWrap');
-const pageInfo=document.getElementById('pageInfo');
-const prevBtn=document.getElementById('prevPage');
-const nextBtn=document.getElementById('nextPage');
-const zoomInBtn=document.getElementById('zoomIn');
-const zoomOutBtn=document.getElementById('zoomOut');
-const zoomLevel=document.getElementById('zoomLevel');
+const pdfCanvasWrap = document.getElementById('pdfCanvasWrap');
+const pageInput = document.getElementById('pageInput');
+const totalPagesEl = document.getElementById('totalPages');
+const prevBtn = document.getElementById('prevPage');
+const nextBtn = document.getElementById('nextPage');
+const goBtn = document.getElementById('goPageBtn');
+const zoomInBtn = document.getElementById('zoomIn');
+const zoomOutBtn = document.getElementById('zoomOut');
+const zoomLevelEl = document.getElementById('zoomLevel');
+const pdfBadge = document.getElementById('pdfBadge');
 
-document.getElementById('pdfFileInput').addEventListener('change',async e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  const buf=await file.arrayBuffer();
-  pdfDoc=await pdfjsLib.getDocument({data:buf}).promise;
-  pdfPage=1;
+document.getElementById('pdfFileInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  pdfBadge.textContent = 'Memuat…';
+  const buf = await file.arrayBuffer();
+  pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+  pdfPage = 1;
+  pageInput.max = pdfDoc.numPages;
+  totalPagesEl.textContent = '/ ' + pdfDoc.numPages;
+  pdfBadge.textContent = file.name.length > 22 ? file.name.slice(0, 20) + '…' : file.name;
   renderPage();
-  [prevBtn,nextBtn,zoomInBtn,zoomOutBtn].forEach(b=>b.disabled=false);
+  [prevBtn, nextBtn, zoomInBtn, zoomOutBtn, goBtn].forEach(b => b.disabled = false);
 });
 
-async function renderPage(){
-  const page=await pdfDoc.getPage(pdfPage);
-  const vp=page.getViewport({scale:pdfZoom});
-  let canvas=pdfCanvasWrap.querySelector('canvas');
-  if(!canvas){
-    pdfCanvasWrap.innerHTML='';
-    canvas=document.createElement('canvas');
-    canvas.id='pdfCanvas';
+async function renderPage() {
+  if (!pdfDoc) return;
+  pdfPage = Math.max(1, Math.min(pdfDoc.numPages, pdfPage));
+  pageInput.value = pdfPage;
+  const page = await pdfDoc.getPage(pdfPage);
+  const vp = page.getViewport({ scale: pdfZoom });
+  let canvas = pdfCanvasWrap.querySelector('canvas');
+  if (!canvas) {
+    pdfCanvasWrap.innerHTML = '';
+    canvas = document.createElement('canvas');
+    canvas.id = 'pdfCanvas';
     pdfCanvasWrap.appendChild(canvas);
   }
-  canvas.width=vp.width;canvas.height=vp.height;
-  await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
-  pageInfo.textContent=`Hal ${pdfPage} / ${pdfDoc.numPages}`;
-  prevBtn.disabled=pdfPage<=1;
-  nextBtn.disabled=pdfPage>=pdfDoc.numPages;
-  zoomLevel.textContent=Math.round(pdfZoom*100)+'%';
+  canvas.width = vp.width;
+  canvas.height = vp.height;
+  await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+  prevBtn.disabled = pdfPage <= 1;
+  nextBtn.disabled = pdfPage >= pdfDoc.numPages;
+  zoomLevelEl.textContent = Math.round(pdfZoom * 100) + '%';
 }
 
-prevBtn.addEventListener('click',()=>{if(pdfPage>1){pdfPage--;renderPage();}});
-nextBtn.addEventListener('click',()=>{if(pdfPage<pdfDoc.numPages){pdfPage++;renderPage();}});
-zoomInBtn.addEventListener('click',()=>{pdfZoom=Math.min(3,pdfZoom+0.2);renderPage();});
-zoomOutBtn.addEventListener('click',()=>{pdfZoom=Math.max(0.5,pdfZoom-0.2);renderPage();});
-
-// ── Drawing canvas ──
-const canvas=document.getElementById('drawCanvas');
-const ctx=canvas.getContext('2d');
-let drawing=false,eraser=false,lastX=0,lastY=0;
-function resizeCanvas(){
-  const w=canvas.parentElement.clientWidth;
-  const tmp=ctx.getImageData(0,0,canvas.width,canvas.height);
-  canvas.width=w;ctx.putImageData(tmp,0,0);
-}
-resizeCanvas();window.addEventListener('resize',resizeCanvas);
-function getPos(e){const r=canvas.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return[s.clientX-r.left,s.clientY-r.top];}
-function startDraw(e){e.preventDefault();drawing=true;[lastX,lastY]=getPos(e);}
-function doDraw(e){
-  if(!drawing)return;e.preventDefault();
-  const[x,y]=getPos(e);
-  ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(x,y);
-  ctx.strokeStyle=eraser?'#ffffff':document.getElementById('penColor').value;
-  ctx.lineWidth=parseInt(document.getElementById('penSize').value)*(eraser?6:1);
-  ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();
-  [lastX,lastY]=[x,y];
-}
-function stopDraw(){drawing=false;}
-canvas.addEventListener('mousedown',startDraw);canvas.addEventListener('mousemove',doDraw);
-canvas.addEventListener('mouseup',stopDraw);canvas.addEventListener('mouseleave',stopDraw);
-canvas.addEventListener('touchstart',startDraw,{passive:false});canvas.addEventListener('touchmove',doDraw,{passive:false});
-canvas.addEventListener('touchend',stopDraw);
-document.getElementById('penSize').addEventListener('input',e=>{document.getElementById('sizeVal').textContent=e.target.value;});
-document.getElementById('eraserBtn').addEventListener('click',function(){
-  eraser=!eraser;this.textContent=eraser?'Pena':'Penghapus';canvas.style.cursor=eraser?'cell':'crosshair';
+prevBtn.addEventListener('click', () => { pdfPage--; renderPage(); });
+nextBtn.addEventListener('click', () => { pdfPage++; renderPage(); });
+goBtn.addEventListener('click', () => {
+  const val = parseInt(pageInput.value);
+  if (!isNaN(val)) { pdfPage = val; renderPage(); }
 });
-document.getElementById('clearCanvasBtn').addEventListener('click',()=>ctx.clearRect(0,0,canvas.width,canvas.height));
+pageInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { pdfPage = parseInt(pageInput.value) || 1; renderPage(); }
+});
+zoomInBtn.addEventListener('click', () => { pdfZoom = Math.min(3, pdfZoom + 0.2); renderPage(); });
+zoomOutBtn.addEventListener('click', () => { pdfZoom = Math.max(0.4, pdfZoom - 0.2); renderPage(); });
 
-// ── Answer grid ──
-const ALPHA='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const STATES=[
-  {bg:'#e5e7eb',color:'#555',border:'1px solid #ccc'},
-  {bg:'#185FA5',color:'#fff',border:'1px solid #185FA5'},
-  {bg:'#7c3aed',color:'#fff',border:'1px solid #6d28d9'},
-  {bg:'#b45309',color:'#fff',border:'1px solid #92400e'},
+// ── Drawing Canvas ──
+const dCanvas = document.getElementById('drawCanvas');
+const dCtx = dCanvas.getContext('2d');
+let drawing = false, eraser = false, lastX = 0, lastY = 0;
+
+function resizeCanvas() {
+  const w = dCanvas.parentElement.clientWidth;
+  const h = dCanvas.height || 320;
+  const img = dCtx.getImageData(0, 0, dCanvas.width, dCanvas.height);
+  dCanvas.width = w;
+  dCanvas.height = h;
+  dCtx.putImageData(img, 0, 0);
+}
+// Set initial height properly
+dCanvas.height = 320;
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function getPos(e) {
+  const r = dCanvas.getBoundingClientRect();
+  const s = e.touches ? e.touches[0] : e;
+  return [s.clientX - r.left, s.clientY - r.top];
+}
+dCanvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getPos(e); });
+dCanvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const [x, y] = getPos(e);
+  dCtx.beginPath(); dCtx.moveTo(lastX, lastY); dCtx.lineTo(x, y);
+  dCtx.strokeStyle = eraser ? '#ffffff' : document.getElementById('penColor').value;
+  dCtx.lineWidth = parseInt(document.getElementById('penSize').value) * (eraser ? 6 : 1);
+  dCtx.lineCap = 'round'; dCtx.lineJoin = 'round'; dCtx.stroke();
+  [lastX, lastY] = [x, y];
+});
+dCanvas.addEventListener('mouseup', () => drawing = false);
+dCanvas.addEventListener('mouseleave', () => drawing = false);
+dCanvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; [lastX, lastY] = getPos(e); }, { passive: false });
+dCanvas.addEventListener('touchmove', e => {
+  if (!drawing) return; e.preventDefault();
+  const [x, y] = getPos(e);
+  dCtx.beginPath(); dCtx.moveTo(lastX, lastY); dCtx.lineTo(x, y);
+  dCtx.strokeStyle = eraser ? '#ffffff' : document.getElementById('penColor').value;
+  dCtx.lineWidth = parseInt(document.getElementById('penSize').value) * (eraser ? 6 : 1);
+  dCtx.lineCap = 'round'; dCtx.lineJoin = 'round'; dCtx.stroke();
+  [lastX, lastY] = [x, y];
+}, { passive: false });
+dCanvas.addEventListener('touchend', () => drawing = false);
+
+document.getElementById('penSize').addEventListener('input', e => {
+  document.getElementById('sizeVal').textContent = e.target.value;
+});
+document.getElementById('eraserBtn').addEventListener('click', function () {
+  eraser = !eraser;
+  this.textContent = eraser ? '🖊 Pena' : '🧹 Penghapus';
+  this.classList.toggle('eraser-active', eraser);
+  dCanvas.style.cursor = eraser ? 'cell' : 'crosshair';
+});
+document.getElementById('clearCanvasBtn').addEventListener('click', () => {
+  dCtx.clearRect(0, 0, dCanvas.width, dCanvas.height);
+});
+
+// ── Answer Grid ──
+const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const STATES = [
+  { bg: '#1e2333', color: '#555c78', border: '1px solid #2a2f42' },
+  { bg: '#4f8ef7', color: '#fff', border: '1px solid #3a7de8' },
+  { bg: '#8b5cf6', color: '#fff', border: '1px solid #7c3aed' },
+  { bg: '#f59e0b', color: '#000', border: '1px solid #d97706' },
 ];
-let answers={},numQ=50,numOpts=4;
-function applyBtnStyle(btn,state){const s=STATES[state]||STATES[0];btn.style.background=s.bg;btn.style.color=s.color;btn.style.border=s.border;}
-function buildGrid(){
-  const grid=document.getElementById('answerGrid');grid.innerHTML='';
-  for(let q=1;q<=numQ;q++){
-    const g=document.createElement('div');g.className='answer-group';
-    const qn=document.createElement('div');qn.className='qnum';qn.textContent=q+'.';g.appendChild(qn);
-    const opts=document.createElement('div');opts.className='opts';
-    for(let i=0;i<numOpts;i++){
-      const lbl=ALPHA[i];
-      const btn=document.createElement('button');btn.className='opt-btn';btn.textContent=lbl;
-      applyBtnStyle(btn,(answers[q]&&answers[q][lbl])||0);
-      btn.addEventListener('click',()=>{
-        if(!answers[q])answers[q]={};
-        const c=answers[q][lbl]||0,next=(c+1)%4;
-        if(next===0)delete answers[q][lbl];else answers[q][lbl]=next;
-        if(Object.keys(answers[q]).length===0)delete answers[q];
-        applyBtnStyle(btn,next);recalcInfo();
+let answers = {}, numQ = 50, numOpts = 4;
+
+function applyBtnStyle(btn, state) {
+  const s = STATES[state] || STATES[0];
+  btn.style.background = s.bg;
+  btn.style.color = s.color;
+  btn.style.border = s.border;
+}
+
+function buildGrid() {
+  const grid = document.getElementById('answerGrid');
+  grid.innerHTML = '';
+  document.getElementById('answerBadge').textContent = numQ + ' soal · ' + numOpts + ' opsi';
+  for (let q = 1; q <= numQ; q++) {
+    const g = document.createElement('div');
+    g.className = 'answer-group';
+    const qn = document.createElement('div');
+    qn.className = 'qnum';
+    qn.textContent = q;
+    g.appendChild(qn);
+    const opts = document.createElement('div');
+    opts.className = 'opts';
+    for (let i = 0; i < numOpts; i++) {
+      const lbl = ALPHA[i];
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.textContent = lbl;
+      applyBtnStyle(btn, (answers[q] && answers[q][lbl]) || 0);
+      btn.addEventListener('click', () => {
+        if (!answers[q]) answers[q] = {};
+        const c = answers[q][lbl] || 0, next = (c + 1) % 4;
+        if (next === 0) delete answers[q][lbl]; else answers[q][lbl] = next;
+        if (Object.keys(answers[q]).length === 0) delete answers[q];
+        applyBtnStyle(btn, next);
+        recalcInfo();
       });
       opts.appendChild(btn);
     }
-    g.appendChild(opts);grid.appendChild(g);
+    g.appendChild(opts);
+    grid.appendChild(g);
   }
   recalcInfo();
 }
-function recalcInfo(){
-  let yakin=0,ragu=0,total=Object.keys(answers).length;
-  for(const q in answers){if(Object.values(answers[q]).some(s=>s>=2))ragu++;else yakin++;}
-  document.getElementById('answeredCount').textContent=yakin;
-  document.getElementById('doubtCount').textContent=ragu;
-  document.getElementById('unansweredCount').textContent=numQ-total;
+
+function recalcInfo() {
+  let yakin = 0, ragu = 0, total = Object.keys(answers).length;
+  for (const q in answers) {
+    if (Object.values(answers[q]).some(s => s >= 2)) ragu++; else yakin++;
+  }
+  document.getElementById('answeredCount').textContent = yakin;
+  document.getElementById('doubtCount').textContent = ragu;
+  document.getElementById('unansweredCount').textContent = numQ - total;
 }
-document.getElementById('generateBtn').addEventListener('click',()=>{
-  numQ=Math.max(1,Math.min(200,parseInt(document.getElementById('numQ').value)||50));
-  numOpts=Math.max(2,Math.min(6,parseInt(document.getElementById('numOpts').value)||4));
-  answers={};buildGrid();
+
+document.getElementById('generateBtn').addEventListener('click', () => {
+  numQ = Math.max(1, Math.min(200, parseInt(document.getElementById('numQ').value) || 50));
+  numOpts = Math.max(2, Math.min(6, parseInt(document.getElementById('numOpts').value) || 4));
+  answers = {}; buildGrid();
 });
-document.getElementById('resetBtn').addEventListener('click',()=>{answers={};buildGrid();});
+document.getElementById('resetBtn').addEventListener('click', () => { answers = {}; buildGrid(); });
 buildGrid();
 </script>
+</body>
+</html>
